@@ -11,9 +11,11 @@ var _ = fmt.Print
 
 func main() {
 	fmt.Print("$ ")
+
+	//wait for user input
 	command, err := bufio.NewReader(os.Stdin).ReadString('\n')
 	if err != nil {
-		fmt.Printf("ReadString failed: %v\n", err)
+		fmt.Fprintln(os.Stderr, "Error reading input:", err)
 	}
 
 	if command != "" {
