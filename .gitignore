@@ -1,0 +1,18 @@
+# Go binaries
+*.exe
+*.out
+*.test
+
+# Build output
+/bin/
+/dist/
+
+# Environment files
+.env
+
+# IDE / editor
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
