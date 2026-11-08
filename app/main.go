@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"os/exec"
 	"slices"
 	"strings"
 )
@@ -70,6 +71,8 @@ func executeType(args []string) {
 	cmd := args[1]
 	if slices.Contains(builtins, cmd) {
 		fmt.Println(cmd + " is a shell builtin")
+	} else if path, err := exec.LookPath(cmd); err == nil {
+		fmt.Println(cmd + " is " + path)
 	} else {
 		fmt.Println(cmd + ": not found")
 	}
