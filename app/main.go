@@ -50,7 +50,11 @@ func executeCommand(command string) bool {
 	case "type":
 		executeType(args)
 	default:
-		fmt.Println(command + ": command not found")
+		if _, err := exec.LookPath(args[0]); err == nil {
+			executeBin(args[0], args[1:])
+		} else {
+			fmt.Println(command + ": command not found")
+		}
 	}
 	return false
 }
@@ -75,5 +79,15 @@ func executeType(args []string) {
 		fmt.Println(cmd + " is " + path)
 	} else {
 		fmt.Println(cmd + ": not found")
+	}
+}
+
+func executeBin(command string, args []string) {
+	cmd := exec.Command(command, args...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	if err := cmd.Run(); err != nil {
+		fmt.Fprintln(cmd.Stderr, "Error running program", err)
 	}
 }
