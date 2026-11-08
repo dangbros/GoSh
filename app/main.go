@@ -11,7 +11,7 @@ import (
 
 // Ensures gofmt doesn't remove the "fmt" import in stage 1 (feel free to remove this!)
 
-var builtins = []string{"type", "echo", "exit"}
+var builtins = []string{"type", "echo", "exit", "pwd"}
 
 func main() {
 	reader := bufio.NewReader(os.Stdin)
@@ -49,6 +49,8 @@ func executeCommand(command string) bool {
 		executeEcho(command)
 	case "type":
 		executeType(args)
+	case "pwd":
+		executePwd()
 	default:
 		if _, err := exec.LookPath(args[0]); err == nil {
 			executeBin(args[0], args[1:])
@@ -90,4 +92,13 @@ func executeBin(command string, args []string) {
 	if err := cmd.Run(); err != nil {
 		fmt.Fprintln(cmd.Stderr, "Error running program", err)
 	}
+}
+
+func executePwd() {
+	path, err := os.Getwd()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error getting current dir", err)
+	}
+
+	fmt.Println(path)
 }
