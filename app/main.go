@@ -51,6 +51,8 @@ func executeCommand(command string) bool {
 		executeType(args)
 	case "pwd":
 		executePwd()
+	case "cd":
+		executeCd(args)
 	default:
 		if _, err := exec.LookPath(args[0]); err == nil {
 			executeBin(args[0], args[1:])
@@ -101,4 +103,11 @@ func executePwd() {
 	}
 
 	fmt.Println(path)
+}
+
+func executeCd(args []string) {
+	path := args[1]
+	if err := os.Chdir(path); err != nil {
+		fmt.Printf("cd: %s: No such file or directory\n", path)
+	}
 }
