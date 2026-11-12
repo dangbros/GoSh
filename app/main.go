@@ -8,6 +8,8 @@ import (
 	"path/filepath"
 	"slices"
 	"strings"
+
+	"github.com/google/shlex"
 )
 
 // Ensures gofmt doesn't remove the "fmt" import in stage 1 (feel free to remove this!)
@@ -41,13 +43,13 @@ func main() {
 }
 
 func executeCommand(command string) bool {
-	args := strings.Fields(command)
+	args, _ := shlex.Split(command)
 
 	switch args[0] {
 	case "exit":
 		return true
 	case "echo":
-		executeEcho(command)
+		fmt.Println(strings.Join(args[1:], " "))
 	case "type":
 		executeType(args)
 	case "pwd":
@@ -62,14 +64,6 @@ func executeCommand(command string) bool {
 		}
 	}
 	return false
-}
-
-func executeEcho(command string) {
-	if len(command) <= 5 {
-		fmt.Println()
-	} else {
-		fmt.Println(command[5:])
-	}
 }
 
 func executeType(args []string) {
