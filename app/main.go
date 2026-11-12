@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"slices"
 	"strings"
 )
@@ -107,6 +108,8 @@ func executePwd() {
 
 func executeCd(args []string) {
 	path := args[1]
+	path = filepath.Clean(path)
+
 	if err := os.Chdir(path); err != nil {
 		fmt.Printf("cd: %s: No such file or directory\n", path)
 	}
