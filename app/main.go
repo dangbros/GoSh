@@ -12,7 +12,7 @@ import (
 
 // Ensures gofmt doesn't remove the "fmt" import in stage 1 (feel free to remove this!)
 
-var builtins = []string{"type", "echo", "exit", "pwd"}
+var builtins = []string{"type", "echo", "exit", "pwd", "cd"}
 
 func main() {
 	reader := bufio.NewReader(os.Stdin)
@@ -108,6 +108,7 @@ func executePwd() {
 
 func executeCd(args []string) {
 	path := args[1]
+	path = strings.Replace(path, "~", os.Getenv("HOME"), 1)
 	path = filepath.Clean(path)
 
 	if err := os.Chdir(path); err != nil {
